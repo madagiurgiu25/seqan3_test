@@ -12,13 +12,14 @@
 #include <seqan3/test/expect_range_eq.hpp>
 
 #include "cli_test.hpp"
+#define PROJECT_NAME "seqan3_test"
 
 // To prevent issues when running multiple CLI tests in parallel, give each CLI test unique names:
 struct fastq_to_fasta : public cli_test {};
 
 TEST_F(fastq_to_fasta, no_options)
 {
-    cli_test_result result = execute_app("app-template");
+    cli_test_result result = execute_app(PROJECT_NAME);
     std::string expected
     {
         "Fastq-to-Fasta-Converter\n"
@@ -32,7 +33,7 @@ TEST_F(fastq_to_fasta, no_options)
 
 TEST_F(fastq_to_fasta, fail_no_argument)
 {
-    cli_test_result result = execute_app("app-template", "-v");
+    cli_test_result result = execute_app(PROJECT_NAME, "-v");
     std::string expected
     {
         "Parsing error. Not enough positional arguments provided (Need at least 1). "
@@ -45,7 +46,7 @@ TEST_F(fastq_to_fasta, fail_no_argument)
 
 TEST_F(fastq_to_fasta, with_argument)
 {
-    cli_test_result result = execute_app("app-template", data("in.fastq"));
+    cli_test_result result = execute_app(PROJECT_NAME, data("in.fastq"));
     EXPECT_EQ(result.exit_code, 0);
     EXPECT_EQ(result.out, "> seq1\nACGTTTGATTCGCG\n> seq2\nTCGGGGGATTCGCG\n");
     EXPECT_EQ(result.err, std::string{});
@@ -53,7 +54,7 @@ TEST_F(fastq_to_fasta, with_argument)
 
 TEST_F(fastq_to_fasta, with_argument_verbose)
 {
-    cli_test_result result = execute_app("app-template", data("in.fastq"), "-v");
+    cli_test_result result = execute_app(PROJECT_NAME, data("in.fastq"), "-v");
     EXPECT_EQ(result.exit_code, 0);
     EXPECT_EQ(result.out, "> seq1\nACGTTTGATTCGCG\n> seq2\nTCGGGGGATTCGCG\n");
     EXPECT_EQ(result.err, "Conversion was a success. Congrats!\n");
@@ -61,7 +62,7 @@ TEST_F(fastq_to_fasta, with_argument_verbose)
 
 TEST_F(fastq_to_fasta, with_out_file)
 {
-    cli_test_result result = execute_app("app-template", data("in.fastq"), "-o", "out.fasta");
+    cli_test_result result = execute_app(PROJECT_NAME, data("in.fastq"), "-o", "out.fasta");
     seqan3::sequence_file_input fin{"out.fasta", seqan3::fields<seqan3::field::seq, seqan3::field::id>{}};
 
     // create records to compare

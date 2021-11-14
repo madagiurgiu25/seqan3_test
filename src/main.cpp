@@ -146,220 +146,220 @@ void align_two_sequences(){
 
 }
 
-std::vector<std::string> split(const std::string s, char delimiter)
-{
-   std::vector<std::string> tokens;
-   std::string token;
-   std::istringstream tokenStream(s);
+// std::vector<std::string> split(const std::string s, char delimiter)
+// {
+//    std::vector<std::string> tokens;
+//    std::string token;
+//    std::istringstream tokenStream(s);
 
-//    std::cout << "enter split function" << std::endl;
+// //    std::cout << "enter split function" << std::endl;
 
-   while (std::getline(tokenStream, token, delimiter))
-   {
-      tokens.push_back(token);
-    //   std::cout << token << std::endl;
-   }
-   return tokens;
-}
+//    while (std::getline(tokenStream, token, delimiter))
+//    {
+//       tokens.push_back(token);
+//     //   std::cout << token << std::endl;
+//    }
+//    return tokens;
+// }
 
-void print_data(std::vector<std::vector<std::string>> &data, std::vector<std::string> headers){
+// void print_data(std::vector<std::vector<std::string>> &data, std::vector<std::string> headers){
 
-    std::cout << "Size data " << data.size() << " x " << data[0].size() << std::endl;
-    if (!headers.empty()){
-        // display header
-        for(auto const& col: headers){
-            std::cout << col << " ";
-        }
-    }
+//     std::cout << "Size data " << data.size() << " x " << data[0].size() << std::endl;
+//     if (!headers.empty()){
+//         // display header
+//         for(auto const& col: headers){
+//             std::cout << col << " ";
+//         }
+//     }
 
-    for(auto const& row: data) {
-        for(auto const& col: row){
-            std::cout << col << " ";
-        }
-        std::cout << std::endl;
-    }
+//     for(auto const& row: data) {
+//         for(auto const& col: row){
+//             std::cout << col << " ";
+//         }
+//         std::cout << std::endl;
+//     }
 
-}
+// }
 
-template <typename number_type, typename range_type>
-number_type to_number(range_type && range)
-{
-    std::string str;
-    number_type num;
-    std::ranges::copy(range, std::cpp20::back_inserter(str));
-    auto res = std::from_chars(&str[0], &str[0] + str.size(), num);
+// template <typename number_type, typename range_type>
+// number_type to_number(range_type && range)
+// {
+//     std::string str;
+//     number_type num;
+//     std::ranges::copy(range, std::cpp20::back_inserter(str));
+//     auto res = std::from_chars(&str[0], &str[0] + str.size(), num);
  
-    if (res.ec != std::errc{})
-    {
-        seqan3::debug_stream << "Could not cast '" << range << "' to a valid number\n";
-        throw std::invalid_argument{"CAST ERROR"};
-    }
-    return num;
-}
+//     if (res.ec != std::errc{})
+//     {
+//         seqan3::debug_stream << "Could not cast '" << range << "' to a valid number\n";
+//         throw std::invalid_argument{"CAST ERROR"};
+//     }
+//     return num;
+// }
 
-template <typename T>
-void aggregation_operator(const std::vector<T> &v, std::string aggr){
-    if (aggr == "median")
-            seqan3::debug_stream << ([&v] () { std::sort(v.begin(), v.end()); return v[v.size()/2]; })() << '\n';
-        else if (aggr == "mean")
-            seqan3::debug_stream << ([&v] () { double sum{}; for (auto i : v) sum += i; return sum / v.size(); })()
-                                 << '\n';
-        else
-            seqan3::debug_stream << "I do not know the aggregation method " << aggr << '\n';
-}
+// template <typename T>
+// void aggregation_operator(const std::vector<T> &v, std::string aggr){
+//     if (aggr == "median")
+//             seqan3::debug_stream << ([&v] () { std::sort(v.begin(), v.end()); return v[v.size()/2]; })() << '\n';
+//         else if (aggr == "mean")
+//             seqan3::debug_stream << ([&v] () { double sum{}; for (auto i : v) sum += i; return sum / v.size(); })()
+//                                  << '\n';
+//         else
+//             seqan3::debug_stream << "I do not know the aggregation method " << aggr << '\n';
+// }
 
-void aggregate_data_by_seasons(std::vector<std::vector<std::string>> &data, std::vector<uint8_t> sn, std::string aggr){
-    // assume we know seasons are at column 0
-    std::vector<uint8_t> sv{};
+// void aggregate_data_by_seasons(std::vector<std::vector<std::string>> &data, std::vector<uint8_t> sn, std::string aggr){
+//     // assume we know seasons are at column 0
+//     std::vector<uint8_t> sv{};
 
-    for(auto const& row: data) {
-        auto it = std::next(row.begin()); 
-        if (std::find(sn.begin(), sn.end(), to_number<uint8_t>(*it)) != sn.end()){
-                sv.push_back(to_number<double>(*std::next(it)));
-        }
-    }
+//     for(auto const& row: data) {
+//         auto it = std::next(row.begin()); 
+//         if (std::find(sn.begin(), sn.end(), to_number<uint8_t>(*it)) != sn.end()){
+//                 sv.push_back(to_number<double>(*std::next(it)));
+//         }
+//     }
 
-    seqan3::debug_stream << aggr << " views for seasons is: " << '\n';
-    aggregation_operator(sv, aggr);
+//     seqan3::debug_stream << aggr << " views for seasons is: " << '\n';
+//     aggregation_operator(sv, aggr);
   
-}
+// }
 
-void aggregate_data_by_year(std::vector<std::vector<std::string>> &data, uint32_t yr, std::string aggr){
-    // assume we know year are at column 3
-    std::vector<uint32_t> yv{};
+// void aggregate_data_by_year(std::vector<std::vector<std::string>> &data, uint32_t yr, std::string aggr){
+//     // assume we know year are at column 3
+//     std::vector<uint32_t> yv{};
 
-    for(auto const& row: data) {
-        auto it = std::next(row.begin(), 3); 
-        if (to_number<uint32_t>(*it) >= yr)
-                yv.push_back(to_number<double>(*std::next(it)));
-    }
+//     for(auto const& row: data) {
+//         auto it = std::next(row.begin(), 3); 
+//         if (to_number<uint32_t>(*it) >= yr)
+//                 yv.push_back(to_number<double>(*std::next(it)));
+//     }
 
-    seqan3::debug_stream << aggr << " views for >=year is: " << '\n';
-    aggregation_operator(yv, aggr);
+//     seqan3::debug_stream << aggr << " views for >=year is: " << '\n';
+//     aggregation_operator(yv, aggr);
 
-}
+// }
 
-void initialise_argument_parser(seqan3::argument_parser & parser){
-    parser.info.app_name = "Cersei";
-    parser.info.short_description = "Aggregate average US. Game of Thrones viewers by season.";
-    parser.info.version = "1.0.0";
-}
+// void initialise_argument_parser(seqan3::argument_parser & parser){
+//     parser.info.app_name = "Cersei";
+//     parser.info.short_description = "Aggregate average US. Game of Thrones viewers by season.";
+//     parser.info.version = "1.0.0";
+// }
  
-void run_program(std::filesystem::path & path, uint32_t yr, std::string & aggr_by, bool hd_is_set)
-{
-    std::ifstream file{path.string()};
+// void run_program(std::filesystem::path & path, uint32_t yr, std::string & aggr_by, bool hd_is_set)
+// {
+//     std::ifstream file{path.string()};
  
-    if (file.is_open())
-    {
-        std::vector<double> v;
-        std::string line;
+//     if (file.is_open())
+//     {
+//         std::vector<double> v;
+//         std::string line;
  
-        if (hd_is_set)
-            std::getline(file, line); // ignore first line
+//         if (hd_is_set)
+//             std::getline(file, line); // ignore first line
  
-        while (std::getline(file, line))
-        {
-            auto splitted_line = line | std::views::split('\t');
-            auto it = std::next(splitted_line.begin(), 3); // move to 4th column
+//         while (std::getline(file, line))
+//         {
+//             auto splitted_line = line | std::views::split('\t');
+//             auto it = std::next(splitted_line.begin(), 3); // move to 4th column
  
-            if (to_number<uint32_t>(*it) >= yr)
-                v.push_back(to_number<double>(*std::next(it)));
-        }
+//             if (to_number<uint32_t>(*it) >= yr)
+//                 v.push_back(to_number<double>(*std::next(it)));
+//         }
  
-        if (aggr_by == "median")
-            seqan3::debug_stream << ([&v] () { std::sort(v.begin(), v.end()); return v[v.size()/2]; })() << '\n';
-        else if (aggr_by == "mean")
-            seqan3::debug_stream << ([&v] () { double sum{}; for (auto i : v) sum += i; return sum / v.size(); })()
-                                 << '\n';
-        else
-            seqan3::debug_stream << "I do not know the aggregation method " << aggr_by << '\n';
-    }
-    else
-    {
-        seqan3::debug_stream << "Error: Cannot open file for reading.\n";
-    }
-}
-// -----------------------------------------------------------------------------
+//         if (aggr_by == "median")
+//             seqan3::debug_stream << ([&v] () { std::sort(v.begin(), v.end()); return v[v.size()/2]; })() << '\n';
+//         else if (aggr_by == "mean")
+//             seqan3::debug_stream << ([&v] () { double sum{}; for (auto i : v) sum += i; return sum / v.size(); })()
+//                                  << '\n';
+//         else
+//             seqan3::debug_stream << "I do not know the aggregation method " << aggr_by << '\n';
+//     }
+//     else
+//     {
+//         seqan3::debug_stream << "Error: Cannot open file for reading.\n";
+//     }
+// }
+// // -----------------------------------------------------------------------------
 
-struct cmd_arguments
-{
-    std::filesystem::path file_path{};
-    // std::string file_path{};
-    std::vector<uint8_t> seasons{};
-    std::uint32_t year{};
-    std::string aggregate_by{"mean"};
-    bool header{};
-};
+// struct cmd_arguments
+// {
+//     std::filesystem::path file_path{};
+//     // std::string file_path{};
+//     std::vector<uint8_t> seasons{};
+//     std::uint32_t year{};
+//     std::string aggregate_by{"mean"};
+//     bool header{};
+// };
 
-void parser_homework(int argc, char * argv[]){
+// void parser_homework(int argc, char * argv[]){
     
-    cmd_arguments args;
-    seqan3::argument_parser myparser{"Game-of-Parsing", argc, argv};        // initialise myparser
+//     cmd_arguments args;
+//     seqan3::argument_parser myparser{"Game-of-Parsing", argc, argv};        // initialise myparser
 
-    initialise_argument_parser(myparser);
-    myparser.add_positional_option(args.file_path, "Input");
-    myparser.add_flag(args.header, 'H', "header", "File includes header");
-    myparser.add_option(args.seasons, 's', "season", "Choose the seasons to aggregate.");
-    myparser.add_option(args.year, 'y', "year", "Choose the year to aggregate.");
-    myparser.add_option(args.aggregate_by, 'a', "aggregate-by", "Choose your method of aggregation: mean or median.");
+//     initialise_argument_parser(myparser);
+//     myparser.add_positional_option(args.file_path, "Input");
+//     myparser.add_flag(args.header, 'H', "header", "File includes header");
+//     myparser.add_option(args.seasons, 's', "season", "Choose the seasons to aggregate.");
+//     myparser.add_option(args.year, 'y', "year", "Choose the year to aggregate.");
+//     myparser.add_option(args.aggregate_by, 'a', "aggregate-by", "Choose your method of aggregation: mean or median.");
  
-    try
-    {
-        myparser.parse();                                                  // trigger command line parsing
-        seqan3::debug_stream << args.header << " " << args.file_path << std::endl;
+//     try
+//     {
+//         myparser.parse();                                                  // trigger command line parsing
+//         seqan3::debug_stream << args.header << " " << args.file_path << std::endl;
 
-        // method from the course
-        run_program(args.file_path, args.year, args.aggregate_by, args.header);
+//         // method from the course
+//         run_program(args.file_path, args.year, args.aggregate_by, args.header);
 
-        // my method file
-        std::ifstream myfile(args.file_path.string());
-        std::vector<std::string> headers{};
-        std::vector<std::vector<std::string>> data{};
-        char delimiter = '\t';
+//         // my method file
+//         std::ifstream myfile(args.file_path.string());
+//         std::vector<std::string> headers{};
+//         std::vector<std::vector<std::string>> data{};
+//         char delimiter = '\t';
 
-        if ( myfile.is_open() ) { 
-            std::string myline;
-            while ( myfile ) {
+//         if ( myfile.is_open() ) { 
+//             std::string myline;
+//             while ( myfile ) {
 
-                std::getline (myfile, myline);
-                std::vector<std::string> row = split(myline, delimiter);
+//                 std::getline (myfile, myline);
+//                 std::vector<std::string> row = split(myline, delimiter);
                 
-                if (headers.empty()){
-                    if (args.header == 1){
-                        headers = row;
-                    }else{
-                        data.push_back(row);
-                    }
-                }else{
-                    if (row.size() > 0){ // avoid adding last line
-                        data.push_back(row);
-                    }
+//                 if (headers.empty()){
+//                     if (args.header == 1){
+//                         headers = row;
+//                     }else{
+//                         data.push_back(row);
+//                     }
+//                 }else{
+//                     if (row.size() > 0){ // avoid adding last line
+//                         data.push_back(row);
+//                     }
                     
-                }
-            }
-        }
+//                 }
+//             }
+//         }
 
-        // display data
-        print_data(data, headers);
+//         // display data
+//         print_data(data, headers);
 
-        // compute seasons and year
-        // aggregate_data_by_seasons(data, args.seasons, args.aggregate_by);
-        // aggregate_data_by_year(data, args.year, args.aggregate_by);
+//         // compute seasons and year
+//         // aggregate_data_by_seasons(data, args.seasons, args.aggregate_by);
+//         // aggregate_data_by_year(data, args.year, args.aggregate_by);
 
 
-    }
-    catch (seqan3::argument_parser_error const & ext)                     // catch user errors
-    {
-        seqan3::debug_stream << "[Winter has come] " << ext.what() << "\n"; // customise your error message
-    }
-}
+//     }
+//     catch (seqan3::argument_parser_error const & ext)                     // catch user errors
+//     {
+//         seqan3::debug_stream << "[Winter has come] " << ext.what() << "\n"; // customise your error message
+//     }
+// }
 
 
 
 int main(int argc, char * argv[])
 {
     // 1. Read from command line
-    // read_from_commandline(argc, argv);
+    read_from_commandline(argc, argv);
 
     // 2. Read fasta seq
     // read_fasta(argc, argv);
@@ -368,7 +368,7 @@ int main(int argc, char * argv[])
     // align_two_sequences();
 
     // 3. Parse US data
-    parser_homework(argc, argv);
+    // parser_homework(argc, argv);
     
     return 0;
 }
