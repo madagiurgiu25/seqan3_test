@@ -17,6 +17,8 @@
 #include <seqan3/std/filesystem>   
 #include <seqan3/std/charconv>            // includes std::from_chars
 
+#include "starter.hpp"
+#include "gccontent.hpp"
 
 int read_from_commandline(int argc, char * argv[]){
     // Create a buffer for the input
@@ -359,7 +361,7 @@ void align_two_sequences(){
 int main(int argc, char * argv[])
 {
     // 1. Read from command line
-    read_from_commandline(argc, argv);
+    // read_from_commandline(argc, argv);
 
     // 2. Read fasta seq
     // read_fasta(argc, argv);
@@ -369,6 +371,9 @@ int main(int argc, char * argv[])
 
     // 3. Parse US data
     // parser_homework(argc, argv);
+
+    // 4. GC content
+    readSequence(argc, argv);
     
     return 0;
 }
