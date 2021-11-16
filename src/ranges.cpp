@@ -5,6 +5,7 @@
 // use the seqan3::view functionality
 #include <seqan3/alphabet/views/all.hpp>
 #include <seqan3/alphabet/views/complement.hpp>
+#include <seqan3/alphabet/views/translate_join.hpp>
 #include <seqan3/core/debug_stream.hpp>
 #include <seqan3/argument_parser/all.hpp> 
 
@@ -42,6 +43,8 @@ void testRanges(){
 
 int complementSequence(int argc, char * argv[]){
 
+    using namespace seqan3::literals;
+
     // We use the seqan3::argument_parser which was introduced in the second chapter
     // of the tutorial: "Parsing command line arguments with SeqAn".
     seqan3::argument_parser myparser{"Assignment-3", argc, argv}; // initialize
@@ -76,6 +79,17 @@ int complementSequence(int argc, char * argv[]){
     seqan3::debug_stream << "RevComp:  " << (s_as_dna | std::views::reverse | seqan3::views::complement) << '\n';
     seqan3::debug_stream << "Frames:   " << (s_as_dna | seqan3::views::translate(seqan3::translation_frames::six_frames)) << '\n';
 
+
+    // test translate_join
+    seqan3::debug_stream << "Translate join (frame0):   ACGTACGTACGTA and CGAGAGCTTTAGC" << std::endl;
+    std::vector<std::vector<seqan3::dna4> > vec{"ACGTACGTACGTA"_dna4, "TCGAGAGCTTTAGC"_dna4};
+    auto v1 = vec | seqan3::views::translate_join(seqan3::translation_frames::forward_frame0);
+    seqan3::debug_stream << v1 << "\n"; 
+
+    seqan3::debug_stream << "Translate join (all six frames):   ACGTACGTACGTA and CGAGAGCTTTAGC" << std::endl;
+    auto v2 = vec | seqan3::views::translate_join(seqan3::translation_frames::six_frames);
+    seqan3::debug_stream << v2 << "\n"; 
+    
     return 1;
 }
 

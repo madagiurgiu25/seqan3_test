@@ -378,8 +378,8 @@ int main(int argc, char * argv[])
 
     // 5. Ranges
     // testRanges();
-    // complementSequence(argc, argv);
-    bitpackedSequence(argc, argv);
+    complementSequence(argc, argv);
+    // bitpackedSequence(argc, argv);
 
 
     
