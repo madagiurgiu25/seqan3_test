@@ -6,11 +6,11 @@ ENV CC  /usr/local/bin/gcc
 ENV CXX /usr/local/bin/g++
 
 RUN apt-get -y update && \
-    apt-get install -y cmake libgtest-dev libboost-test-dev && \
+    apt-get install -y time cmake libgtest-dev libboost-test-dev && \
     rm -rf /var/lib/apt/lists/* 
 
-RUN mkdir -p /usr/src/tutorial
-COPY . /usr/src/tutorial
+#RUN mkdir -p /usr/src/tutorial
+#COPY . /usr/src/tutorial
 
 # run tests
 # WORKDIR /usr/src/tutorial/test-debug
@@ -18,8 +18,8 @@ COPY . /usr/src/tutorial
 #     make -j 4 && ctest .
 
 # run release
-WORKDIR /usr/src/tutorial/build
-RUN cmake -DCMAKE_BUILD_TYPE=Release ../source && make
+#WORKDIR /usr/src/tutorial/build
+#RUN cmake -DCMAKE_BUILD_TYPE=Release ../source && make
 # CMD ["./hello_world"]
 CMD ["bash"]
 
