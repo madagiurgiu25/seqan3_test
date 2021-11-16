@@ -19,6 +19,7 @@
 
 #include "starter.hpp"
 #include "gccontent.hpp"
+#include "ranges.hpp"
 
 int read_from_commandline(int argc, char * argv[]){
     // Create a buffer for the input
@@ -373,7 +374,14 @@ int main(int argc, char * argv[])
     // parser_homework(argc, argv);
 
     // 4. GC content
-    readSequence(argc, argv);
+    // readSequence(argc, argv);
+
+    // 5. Ranges
+    // testRanges();
+    // complementSequence(argc, argv);
+    bitpackedSequence(argc, argv);
+
+
     
     return 0;
 }
