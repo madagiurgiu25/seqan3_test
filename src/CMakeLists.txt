@@ -10,7 +10,7 @@ target_include_directories ("${PROJECT_NAME}_interface" INTERFACE ../include)
 target_compile_options ("${PROJECT_NAME}_interface" INTERFACE "-pedantic" "-Wall" "-Wextra")
 
 # An object library (without main) to be used in multiple targets.
-add_library ("${PROJECT_NAME}_lib" STATIC fastq_conversion.cpp main_original.cpp starter.cpp gccontent.cpp ranges.cpp)
+add_library ("${PROJECT_NAME}_lib" STATIC fastq_conversion.cpp main_original.cpp starter.cpp gccontent.cpp ranges.cpp minimiser.cpp)
 target_link_libraries ("${PROJECT_NAME}_lib" PUBLIC "${PROJECT_NAME}_interface")
 
 add_executable ("${PROJECT_NAME}" main.cpp)

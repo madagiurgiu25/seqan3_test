@@ -20,6 +20,7 @@
 #include "starter.hpp"
 #include "gccontent.hpp"
 #include "ranges.hpp"
+#include "minimiser.hpp"
 
 int read_from_commandline(int argc, char * argv[]){
     // Create a buffer for the input
@@ -376,12 +377,14 @@ int main(int argc, char * argv[])
     // 4. GC content
     // readSequence(argc, argv);
 
-    // 5. Ranges
+    // 5. Ranges and views
     // testRanges();
-    complementSequence(argc, argv);
+    // complementSequence(argc, argv);
     // bitpackedSequence(argc, argv);
 
-
+    // 6. Minimisers
+    testMinimizer();
     
     return 0;
 }
+
