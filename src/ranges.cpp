@@ -68,10 +68,7 @@ int complementSequence(int argc, char * argv[]){
     seqan3::debug_stream << "Original: " << s_as_dna << '\n';
     
     // this checks for characters not in the alphabet
-    auto s_as_dna2 = s | std::views::transform([] (char const c)
-    {
-       return seqan3::assign_char_strictly_to(c, seqan3::dna5{});
-    });
+    auto s_as_dna2 = s | std::views::transform([] (char const c){return seqan3::assign_char_strictly_to(c, seqan3::dna5{});});
 
     // seqan3::debug_stream << "Cleaned: " << s_as_dna << '\n';
     seqan3::debug_stream << "Reverse:  " << (s_as_dna  | std::views::reverse ) << '\n';

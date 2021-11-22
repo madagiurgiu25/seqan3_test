@@ -58,8 +58,7 @@ void testMinimizer()
     auto example_a = text | seqan3::views::minimiser_hash(seqan3::shape{seqan3::ungapped{4}},
                                                           seqan3::window_size{4},
                                                           seqan3::seed{0}); // sets lexicographic
-    auto convert_values2 = example_a | std::views::transform([](auto i)
-                                                              { return convert2base4(i); });
+    auto convert_values2 = example_a | std::views::transform([](auto i){ return convert2base4(i); });
 
     seqan3::debug_stream << example_a << std::endl;
     seqan3::debug_stream << "to base 4 " << convert_values2 << std::endl;
