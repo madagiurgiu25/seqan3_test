@@ -6,6 +6,10 @@ add_definitions (-DOUTPUTDIR=\"${CMAKE_CURRENT_BINARY_DIR}/output/\")
 add_definitions (-DDATADIR=\"${CMAKE_CURRENT_BINARY_DIR}/data/\")
 add_definitions (-DBINDIR=\"${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/\")
 
+# Specify the configuration file from which the header file will be generated
+configure_file(config.h.in ${CMAKE_BINARY_DIR}/generated/config.h)
+include_directories( ${CMAKE_BINARY_DIR}/generated/ )
+
 # Define cmake configuration flags to configure and build external projects with the same flags as specified for
 # this project.
 # We also pass the C_COMPILER such that googletest is built with the corresponding GCC.
