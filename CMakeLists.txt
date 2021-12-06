@@ -5,6 +5,13 @@ cmake_minimum_required (VERSION 3.8)
 # Define the application name and version.
 project (seqan3_test VERSION 1.0.0)
 
+# Add the variables we need
+# set (VERSION_MAJOR 0)
+# set (VERSION_MINOR 1)
+# set (VERSION_PATCH 0)
+# set (SOFT_VERSION $ {VERSION_MAJOR}. $ {VERSION_MINOR}. $ {VERSION_PATCH})
+ 
+
 ## BUILD
 
 # Make Release default build type
@@ -18,6 +25,7 @@ endif ()
 set (CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
 set (CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
 set (CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
+
 
 # Messages
 string (ASCII 27 Esc)

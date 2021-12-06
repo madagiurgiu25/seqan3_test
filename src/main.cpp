@@ -21,6 +21,7 @@
 #include "gccontent.hpp"
 #include "ranges.hpp"
 #include "minimiser.hpp"
+#include "io.hpp"
 
 int read_from_commandline(int argc, char * argv[]){
     // Create a buffer for the input
@@ -383,7 +384,14 @@ int main(int argc, char * argv[])
     // bitpackedSequence(argc, argv);
 
     // 6. Minimisers
-    testMinimizer();
+    // testMinimizer();
+
+    // 7. I/O
+    // testFasta();
+    // readFromFile("/usr/src/seqan3_test/test/data/in.fasta", "fasta");
+    // testFastaVector(); 
+    // testFastaVectorEfficient();
+    testFastaVectorEfficient2();
     
     return 0;
 }

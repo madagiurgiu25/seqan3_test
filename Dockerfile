@@ -6,7 +6,7 @@ ENV CC  /usr/local/bin/gcc
 ENV CXX /usr/local/bin/g++
 
 RUN apt-get -y update && \
-    apt-get install -y time cmake libgtest-dev libboost-test-dev && \
+    apt-get install -y time cmake libgtest-dev libboost-test-dev zlib1g-dev bzip2 && \
     rm -rf /var/lib/apt/lists/* 
 
 #RUN mkdir -p /usr/src/tutorial
