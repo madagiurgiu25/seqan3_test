@@ -391,7 +391,9 @@ int main(int argc, char * argv[])
     // readFromFile("/usr/src/seqan3_test/test/data/in.fasta", "fasta");
     // testFastaVector(); 
     // testFastaVectorEfficient();
-    testFastaVectorEfficient2();
+    // testFastaVectorEfficient2();
+    filterFastq("/usr/src/seqan3_test/test/data/in.fastq");
+    filterSelect("/usr/src/seqan3_test/test/data/in.fastq");
     
     return 0;
 }

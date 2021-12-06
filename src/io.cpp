@@ -5,6 +5,12 @@
 #include <seqan3/io/sequence_file/input.hpp>
 #include <seqan3/io/sequence_file/all.hpp>  // for sequence_file_input and sequence_file_output
 
+#include <numeric> // std::accumulate
+#include <seqan3/std/ranges>
+ 
+#include <seqan3/core/debug_stream.hpp>
+#include <seqan3/io/sequence_file/all.hpp>
+
 #include "io.hpp"
 
 #include <string>
@@ -159,4 +165,65 @@ GGAGTATAATATATATATATATAT)";
     {
         entries.push_back(record);
     }
+}
+
+void testFastq(){
+
+    std::cout << "Current path: " << std::filesystem::current_path() << '\n';
+    seqan3::sequence_file_input fin{std::filesystem::current_path() / "my.fastq"};
+ 
+    // `&&` is important because seqan3::views::chunk returns temporaries!
+    for (auto && records : fin | seqan3::views::chunk(10))
+    {
+        // `records` contains 10 elements (or less at the end)
+        seqan3::debug_stream << "Taking the next 10 sequences:\n";
+        seqan3::debug_stream << "ID:  " << (*records.begin()).id() << '\n'; // prints first ID in batch
+    }
+}
+
+void filterFastq(std::string filename){
+
+    seqan3::sequence_file_input fin{filename};
+
+    // std::views::filter takes a function object (a lambda in this case) as input that returns a boolean
+    auto minimum_quality_filter = std::views::filter([] (auto const & rec)
+    {
+        auto qualities = rec.base_qualities()
+                       | std::views::transform([] (auto quality) { return seqan3::to_phred(quality); });
+ 
+        auto sum = std::accumulate(qualities.begin(), qualities.end(), 0);
+        return sum / std::ranges::size(qualities) >= 2; // minimum average quality >= 40
+    });
+ 
+    // // `&&` is important because seqan3::views::chunk returns temporaries!
+    // for (auto && records : fin | seqan3::views::chunk(10) | minimum_quality_filter)
+    // {
+    //     // `records` contains 10 elements (or less at the end)
+    //     seqan3::debug_stream << "Taking the next 10 sequences:\n";
+    //     seqan3::debug_stream << "ID:  " << (records.id() << '\n'; // prints first ID in batch
+    // }
+
+    for (auto && rec : fin | minimum_quality_filter | seqan3::views::chunk(10))
+    {
+        seqan3::debug_stream << "ID: " << *(rec.begin()) << '\n';
+    }
+}
+
+void filterSelect(std::string filename){
+ 
+    seqan3::sequence_file_input fin{filename};
+ 
+    auto length_filter = std::views::filter([] (auto const & rec)
+    {
+        return std::ranges::size(rec.sequence()) >= 5;
+    });
+ 
+    // Store all IDs into a vector:
+    std::vector<std::string> ids{};
+    for (auto & record : fin | length_filter | std::views::take(2))
+    {
+        ids.push_back(std::move(record.id()));
+    }
+ 
+    seqan3::debug_stream << ids << '\n';
 }

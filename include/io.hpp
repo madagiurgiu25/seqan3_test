@@ -11,3 +11,7 @@ void testFastaVectorEfficient();
 void testFastaVectorEfficient2();
 
 void testFastaVectorEfficient3();
+
+void filterFastq(std::string filename);
+
+void filterSelect(std::string filename);
